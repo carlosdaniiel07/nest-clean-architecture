@@ -1,5 +1,6 @@
-import { Inject, NotFoundException } from '@nestjs/common';
+import { Inject } from '@nestjs/common';
 import { Customer } from '~/domain/entities';
+import { EntityNotFoundException } from '~/domain/errors';
 import { ICustomerRepository } from '~/domain/repositories';
 import { IFindCustomerUsecase } from '~/domain/usecases';
 
@@ -13,7 +14,7 @@ export class FindCustomerUsecase implements IFindCustomerUsecase {
     const customer = await this.repository.findById(id, ['addresses']);
 
     if (!customer) {
-      throw new NotFoundException('Cliente não encontrado');
+      throw new EntityNotFoundException('Cliente não encontrado');
     }
 
     return customer;
