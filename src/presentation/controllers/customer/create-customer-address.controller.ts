@@ -1,4 +1,11 @@
-import { Body, Controller, Inject, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Inject,
+  Param,
+  ParseUUIDPipe,
+  Post,
+} from '@nestjs/common';
 import { Customer } from '~/domain/entities';
 import {
   CreateAddressModel,
@@ -14,7 +21,7 @@ export class CreateCustomerAddressController {
 
   @Post(':id/address')
   async post(
-    @Param('id') customerId: string,
+    @Param('id', ParseUUIDPipe) customerId: string,
     @Body() createAddressModel: CreateAddressModel,
   ): Promise<Customer> {
     return await this.createCustomerAddressUsecase.execute({

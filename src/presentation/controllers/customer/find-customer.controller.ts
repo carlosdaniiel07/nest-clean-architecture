@@ -1,4 +1,4 @@
-import { Controller, Get, Inject, Param } from '@nestjs/common';
+import { Controller, Get, Inject, Param, ParseUUIDPipe } from '@nestjs/common';
 import { Customer } from '~/domain/entities';
 import { IFindCustomerUsecase } from '~/domain/usecases';
 
@@ -10,7 +10,7 @@ export class FindCustomerController {
   ) {}
 
   @Get(':id')
-  async get(@Param('id') id: string): Promise<Customer | null> {
+  async get(@Param('id', ParseUUIDPipe) id: string): Promise<Customer | null> {
     return await this.findCustomerUsecase.execute(id);
   }
 }
