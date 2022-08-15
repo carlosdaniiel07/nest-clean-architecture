@@ -1,4 +1,5 @@
-import { Repository as TypeOrmRepository } from 'typeorm';
+import { FindOptionsWhere, Repository as TypeOrmRepository } from 'typeorm';
+import { BaseEntity } from '~/domain/entities';
 import { IBaseRepository } from '~/domain/repositories';
 
 export class Repository<T> implements IBaseRepository<T> {
@@ -11,11 +12,13 @@ export class Repository<T> implements IBaseRepository<T> {
   }
 
   async findById(id: string, relations: string[] = []): Promise<T | null> {
-    return (
-      (await this.repository.findOne(id, {
-        relations,
-      })) ?? null
-    );
+    const options: FindOptionsWhere<BaseEntity> = {
+      id,
+    };
+    return await this.repository.findOne({
+      where: options as any,
+      relations,
+    });
   }
 
   async save(entity: T): Promise<T> {
